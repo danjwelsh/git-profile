@@ -1,1 +1,14 @@
-[{"id":"Home","name":"Daniel Welsh","email":"danjwelsh24@gmail.com","key":"0985ASJHD7687"},{"id":"a","name":"a","email":"a","key":"a"}]
+[
+  {
+    "id": "Home",
+    "name": "Daniel Welsh",
+    "email": "danjwelsh24@gmail.com",
+    "key": "084A842BD1752123"
+  },
+  {
+    "id": "Work",
+    "name": "Daniel Welsh",
+    "email": "d.welsh@newcastle.ac.uk",
+    "key": "2DD8ECFF378EBD18"
+  }
+]
