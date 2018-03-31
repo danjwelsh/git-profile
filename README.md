@@ -17,6 +17,12 @@ git-profile add
 ```
 Then follow the instructions in the tool
 
+### List Profiles
+To list your profiles, run:
+```bash
+git-profile list
+```
+
 ### Set a Profile
 Set a git profile using the name you gave it.
 ```bash

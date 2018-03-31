@@ -70,6 +70,13 @@ const loadSavedProfiles = () => {
   })
 }
 
+const listProfiles = (profiles) => {
+  console.log('Your profiles:')
+  for (let i = 0; i < profiles.length; i++) {
+    console.log(`\t${profiles[i].id}`)
+  }
+}
+
 const main = async () => {
   if (mode === undefined) {
     console.log('Commands:\n\tset\n\tadd')
@@ -95,8 +102,7 @@ const main = async () => {
       }
 
       await setGitProfile(storedProfile)
-      process.exit(0)
-
+      break
     case 'add':
       const id = await readInfo('Profile Name: ')
       const name = await readInfo('Your Name: ')
@@ -118,7 +124,10 @@ const main = async () => {
         console.log(`To set your profile, run with the arguments set ${profile.id}`)
       })
 
-      break
+      process.exit(0)
+    case 'list':
+      listProfiles(profiles)
+      process.exit(0)
     default:
       console.log('Commands:\n\tset\n\tadd')
       process.exit(1)
