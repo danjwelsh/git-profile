@@ -2,18 +2,31 @@ const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const store = require('./store')
 
+/**
+ * Set a profile
+ * @param  {string}  id Profile id
+ * @return {Promise<boolean>} True if set
+ */
 const setProfile = async (id) => {
+  // Fetch profile
   const profile = await store.getProfile(id)
 
+  // Exit if not found
   if (!profile) {
     console.log('Profile could not be found')
     return false
   }
 
+  // Set the profile
   const executed = await setGitProfile(profile)
   return executed
 }
 
+/**
+ * Execute commands to set the git profile
+ * @param  {Object}  profile Git profile
+ * @return {Promise<boolean>} True if executed
+ */
 const setGitProfile = async (profile) => {
   const commands = [
     `git config --global user.name "${profile.name}"`,
@@ -21,9 +34,11 @@ const setGitProfile = async (profile) => {
     `git config --global user.signingkey ${profile.key}`
   ]
 
+  // Join into a single command
   const command = commands.join(' && ')
 
   try {
+    // Execute the command
     await exec(command)
     if (process.env.TESTING === 'false') console.log('Using:', profile.id)
     return true
@@ -33,6 +48,10 @@ const setGitProfile = async (profile) => {
   }
 }
 
+/**
+ * List all profiles
+ * @return {Promise<void>}
+ */
 const listProfiles = async () => {
   const profiles = await store.getProfiles()
 
@@ -43,6 +62,11 @@ const listProfiles = async () => {
   }
 }
 
+/**
+ * Store a profile
+ * @param  {Object}  profile Profile to store
+ * @return {Promise}
+ */
 const storeProfile = async (profile) => {
   let profiles = await store.getProfiles()
   profiles.push(profile)
