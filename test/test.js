@@ -10,12 +10,14 @@
 
 const assert = require('assert')
 const store = require('./../src/store')
+const profileManager = require('./../src/profile')
 const path = require('path')
 const fs = require('fs')
 
 let storedUserProfiles = []
 
 before(function (done) {
+  process.env.TESTING = 'true'
   const profileStore = path.join(__dirname, '/../profiles.json')
   fs.readFile(profileStore, (err, data) => {
     if (err) throw err
@@ -25,6 +27,7 @@ before(function (done) {
 })
 
 after(function (done) {
+  process.env.TESTING = 'false'
   const profileStore = path.join(__dirname, '/../profiles.json')
   fs.writeFile(profileStore, JSON.stringify(storedUserProfiles, null, 2), 'utf8', () => {
     done()
@@ -76,6 +79,38 @@ describe('Store', function () {
         }
       }
       assert(profile)
+    })
+  })
+})
+
+describe('Profile Manager', function () {
+  describe('Can list profiles', function () {
+    it('should list all profiles', async function () {
+      await profileManager.listProfiles()
+      assert(true)
+    })
+  })
+
+  describe('Can store a profile', function () {
+    it('should list all profiles', async function () {
+      const testProfile = {
+        id: 'a',
+        name: 'a',
+        email: 'a',
+        key: 'a'
+      }
+
+      await profileManager.storeProfile(testProfile)
+      const stored = await store.getProfile('a')
+      assert(stored)
+    })
+  })
+
+  describe('Can set a profile', function () {
+    it('should set a profile', async function () {
+      await profileManager.storeProfile(storedUserProfiles[0])
+      const set = await profileManager.setProfile(storedUserProfiles[0].id)
+      assert(set)
     })
   })
 })

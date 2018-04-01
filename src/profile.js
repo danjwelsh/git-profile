@@ -7,11 +7,11 @@ const setProfile = async (id) => {
 
   if (!profile) {
     console.log('Profile could not be found')
-    return
+    return false
   }
 
-  const isSet = await setGitProfile(profile)
-  console.log(isSet)
+  const executed = await setGitProfile(profile)
+  return executed
 }
 
 const setGitProfile = async (profile) => {
@@ -25,7 +25,7 @@ const setGitProfile = async (profile) => {
 
   try {
     await exec(command)
-    console.log('Using:', profile.id)
+    if (process.env.TESTING === 'false') console.log('Using:', profile.id)
     return true
   } catch (e) {
     console.error(e)
@@ -35,6 +35,8 @@ const setGitProfile = async (profile) => {
 
 const listProfiles = async () => {
   const profiles = await store.getProfiles()
+
+  if (process.env.TESTING === 'true') return
   console.log('Your profiles:')
   for (let i = 0; i < profiles.length; i++) {
     console.log(`\t${profiles[i].id}`)
