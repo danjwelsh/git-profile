@@ -113,4 +113,20 @@ describe('Profile Manager', function () {
       assert(set)
     })
   })
+
+  describe('Can remove a profile', function () {
+    it('should remove a profile', async function () {
+      const profile = {
+        id: 'removeMe',
+        name: 'test',
+        email: 'test',
+        key: 'test'
+      }
+      await profileManager.storeProfile(profile)
+      await profileManager.removeProfile(profile.id)
+
+      const stored = await store.getProfile(profile.id)
+      assert(!stored)
+    })
+  })
 })

@@ -87,6 +87,15 @@ const main = async () => {
       await profileManager.listProfiles()
       process.exit(0)
 
+    case 'remove':
+      try {
+        await profileManager.removeProfile(process.argv[3])
+      } catch (e) {
+        console.log('Profile was not removed')
+        process.exit(1)
+      }
+      process.exit(0)
+
     default:
       console.log('Commands:\n\tset\n\tadd\n\tlist')
       process.exit(1)

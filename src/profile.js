@@ -63,6 +63,29 @@ const listProfiles = async () => {
 }
 
 /**
+ * Remove a profile from the store
+ * @param  {string}  id Profile ID
+ * @return {Promise<boolean>}
+ */
+const removeProfile = async (id) => {
+  const profile = await store.getProfile(id)
+  if (!profile) {
+    throw new Error('Profile could not be found')
+  }
+
+  let profiles = await store.getProfiles()
+  for (let i = 0; i < profiles.length; i++) {
+    if (profiles[i].id === id) {
+      profiles.splice(i, 1)
+      await store.setProfiles(profiles)
+      return true
+    }
+  }
+
+  return false
+}
+
+/**
  * Store a profile
  * @param  {Object}  profile Profile to store
  * @return {Promise}
@@ -77,5 +100,6 @@ module.exports = {
   setProfile,
   setGitProfile,
   listProfiles,
-  storeProfile
+  storeProfile,
+  removeProfile
 }
