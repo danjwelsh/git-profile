@@ -7,7 +7,14 @@ const getProfiles = () => {
   return new Promise((resolve, reject) => {
     fs.stat(profileStore, (err, stat) => {
       if (err === null) {
-        resolve(require('./../profiles.json'))
+        try {
+          fs.readFile(profileStore, (err, data) => {
+            if (err) throw reject(err)
+            resolve(JSON.parse(data))
+          })
+        } catch (e) {
+          reject(e)
+        }
       } else if (err.code === 'ENOENT') {
         const profiles = []
         fs.writeFile(profileStore, JSON.stringify(profiles, null, 2), 'utf8', () => {
@@ -31,8 +38,13 @@ const getProfile = async (id) => {
 
 const setProfiles = async (profiles) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(profileStore, JSON.stringify(profiles, null, 2), 'utf8', () => {
-    })
+    if (!profiles) {
+      reject(new Error('Profiles not defined'))
+    } else {
+      fs.writeFile(profileStore, JSON.stringify(profiles, null, 2), 'utf8', () => {
+        resolve()
+      })
+    }
   })
 }
 
