@@ -28,3 +28,9 @@ Set a git profile using the name you gave it.
 ```bash
 git-profile set <your-profile-name>
 ```
+
+### Remove a Profile
+Remove a profile using the name you gave it.
+```bash
+git-profile remove <your-profile-name>
+```
