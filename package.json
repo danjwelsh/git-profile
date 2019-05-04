@@ -2,13 +2,36 @@
   "name": "git-profile",
   "version": "0.0.0",
   "description": "Tool to help manage git profiles",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha"
+    "test": "nyc --reporter=text mocha",
+    "build": "tsc",
+    "preversion": "npm run test:local && conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "prettier": "prettier --write '**/*.{js,ts,tsx,json,css,md}'"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danjwelsh/git-profile.git"
+    "url": "git+https://github.com/wel-shy/git-profile.git"
   },
   "keywords": [
     "git"
@@ -16,19 +39,34 @@
   "author": "Daniel Welsh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/danjwelsh/git-profile/issues"
+    "url": "https://github.com/wel-shy/git-profile/issues"
   },
-  "homepage": "https://github.com/danjwelsh/git-profile#readme",
+  "homepage": "https://github.com/wel-shy/git-profile#readme",
   "bin": "./index.js",
   "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@types/inquirer": "^6.0.1",
+    "@types/node": "^12.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
+    "husky": "^2.2.0",
+    "jest": "^24.7.1",
+    "lint-staged": "^8.1.6",
     "mocha": "^5.2.0",
-    "nyc": "^13.3.0"
+    "nyc": "^13.3.0",
+    "prettier": "^1.17.0",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0",
+    "inquirer": "^6.3.1"
+  }
 }
