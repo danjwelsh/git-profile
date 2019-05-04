@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * index.js
  * Author: Daniel Welsh
